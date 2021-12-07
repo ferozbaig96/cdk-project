@@ -1,8 +1,8 @@
 package com.myorg;
 
-import software.amazon.awscdk.App;
+import software.amazon.awscdk.core.App;
 
-public class CdkProjectApp {
+public final class CdkProjectApp {
 	public static void main(final String[] args) {
 		App app = new App();
 

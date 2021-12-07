@@ -1,7 +1,7 @@
 package com.myorg;
 
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.core.Stack;
+import software.amazon.awscdk.core.StackProps;
 import software.constructs.Construct;
 
 public class CdkProjectStack extends Stack {
