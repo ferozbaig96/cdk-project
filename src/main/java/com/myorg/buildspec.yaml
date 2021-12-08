@@ -1,0 +1,31 @@
+version: 0.2
+phases:
+  build:
+    commands:
+     - echo "Zipping deployment package..."
+     - zip -r9 deployment_package.zip .
+  post_build:
+    commands:
+       - echo "Updating lambda Function..."
+       - aws lambda update-function-code --function-name SamplePython --zip-file fileb://deployment_package.zip --publish
+      # - echo "DONE!!"
+      - echo "Creating appspec.yaml file for CodeDeploy"
+      - |
+        cat << EOF > appspec.yaml
+        version: 0.0
+        Resources:
+          - MyFunction:
+              Type: AWS::Lambda::Function
+              Properties:
+                Name: "SamplePython"
+                Alias: "prod"
+                TargetVersion: "3"
+                CurrentVersion: "1"
+        EOF
+      - echo "ls"
+      - ls
+      - cat appspec.yaml
+artifacts:
+  name: 'appspec.yaml'
+  files:
+    - 'appspec.yaml'

@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - MyFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "SampleLambda"
+        Alias: "prod"
+        TargetVersion: "3"
+        CurrentVersion: "1"

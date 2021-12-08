@@ -1,0 +1,25 @@
+{
+  "FunctionName": "abc",
+  "FunctionArn": "arn:aws:lambda:us-east-1:784439035548:function:abc:7",
+  "Runtime": "python3.9",
+  "Role": "arn:aws:iam::784439035548:role/service-role/abc-role-ch8o79hp",
+  "Handler": "lambda_function.lambda_handler",
+  "CodeSize": 360,
+  "Description": "",
+  "Timeout": 3,
+  "MemorySize": 128,
+  "LastModified": "2021-12-08T18:03:13.000+0000",
+  "CodeSha256": "ZMQWk1/JgLUIGcb48rup/r/CaCFQcq87EKvq+q1kc+E=",
+  "Version": "7",
+  "TracingConfig": {
+    "Mode": "PassThrough"
+  },
+  "RevisionId": "041995e5-4a3a-415a-814d-e23e69dfcc5d",
+  "State": "Pending",
+  "StateReason": "The function is being created.",
+  "StateReasonCode": "Creating",
+  "PackageType": "Zip",
+  "Architectures": [
+    "x86_64"
+  ]
+}

@@ -9,7 +9,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cdk.version>1.134.0</cdk.version>
+        <cdk.version>2.0.0</cdk.version>
         <junit.version>5.7.1</junit.version>
     </properties>
 
@@ -40,7 +40,7 @@
         <!-- AWS Cloud Development Kit -->
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>aws-cdk-lib</artifactId>
             <version>${cdk.version}</version>
         </dependency>
 
@@ -51,28 +51,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Code Pipeline -->
         <dependency>
-            <groupId>software.amazon.awscdk</groupId>
-            <artifactId>codepipeline</artifactId>
-            <version>${cdk.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awscdk</groupId>
-            <artifactId>codepipeline-actions</artifactId>
-            <version>${cdk.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awscdk</groupId>
-            <artifactId>cdk-pipelines</artifactId>
-            <version>${cdk.version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
         </dependency>
 
-        <!-- Code Commit -->
-        <dependency>
-            <groupId>software.amazon.awscdk</groupId>
-            <artifactId>codecommit</artifactId>
-            <version>${cdk.version}</version>
-        </dependency>
     </dependencies>
 </project>
