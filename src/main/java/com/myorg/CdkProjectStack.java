@@ -3,7 +3,9 @@ package com.myorg;
 import com.google.common.collect.ImmutableMap;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.codebuild.BuildEnvironment;
 import software.amazon.awscdk.services.codebuild.BuildSpec;
+import software.amazon.awscdk.services.codebuild.LinuxBuildImage;
 import software.amazon.awscdk.services.codebuild.PipelineProject;
 import software.amazon.awscdk.services.codecommit.Repository;
 import software.amazon.awscdk.services.codedeploy.LambdaApplication;
@@ -74,6 +76,7 @@ public class CdkProjectStack extends Stack {
 
 		final PipelineProject pipelineProject = PipelineProject.Builder
 			.create(this, "Project")
+			.projectName(Constants.PROJECT_NAME)
 			//.logging(LoggingOptions.builder().cloudWatch(CloudWatchLoggingOptions.builder().enabled(true).build()).build())
 			.buildSpec(BuildSpec.fromObject(ImmutableMap.of(
 				"version", "0.2",
@@ -85,6 +88,9 @@ public class CdkProjectStack extends Stack {
 						)),
 					"post_build", ImmutableMap.of(
 						"commands", Arrays.asList(
+
+							"echo aws version",
+							"aws --version",
 
 							"echo Getting current lambda version against alias " + Constants.LAMBDA_FUNCTION_ALIAS,
 							"currentVersion=`aws lambda get-alias --function-name " + Constants.LAMBDA_FUNCTION_NAME + " --name " + Constants.LAMBDA_FUNCTION_ALIAS
@@ -128,6 +134,8 @@ public class CdkProjectStack extends Stack {
 
 				)
 			)))
+			// STANDARD_5_0 includes CLIv2. Default is STANDARD_1_0 having CLIv1
+			.environment(BuildEnvironment.builder().buildImage(LinuxBuildImage.STANDARD_5_0).build())
 			.build();
 
 		Artifact buildOutput = new Artifact("DeployToLambdaOutputArtifact");
@@ -158,7 +166,8 @@ public class CdkProjectStack extends Stack {
 				.applicationName(Constants.CODE_DEPLOY_APP_NAME)
 				.build()
 			)
-			.deploymentConfig(LambdaDeploymentConfig.CANARY_10_PERCENT_5_MINUTES)
+			// .deploymentConfig(LambdaDeploymentConfig.CANARY_10_PERCENT_5_MINUTES) // todo
+			.deploymentConfig(LambdaDeploymentConfig.ALL_AT_ONCE)
 			// .alias(version.addAlias("prod"))
 			.alias(Alias.Builder
 				.create(this, Constants.PROJECT_NAME + "Alias")
