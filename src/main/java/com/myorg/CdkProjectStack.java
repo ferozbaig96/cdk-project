@@ -179,8 +179,8 @@ public class CdkProjectStack extends Stack {
 				.applicationName(Constants.CODE_DEPLOY_APP_NAME)
 				.build()
 			)
-			// .deploymentConfig(LambdaDeploymentConfig.CANARY_10_PERCENT_5_MINUTES) // todo
-			.deploymentConfig(LambdaDeploymentConfig.ALL_AT_ONCE)
+			.deploymentConfig(LambdaDeploymentConfig.CANARY_10_PERCENT_5_MINUTES)
+			// .deploymentConfig(LambdaDeploymentConfig.ALL_AT_ONCE)
 			// .alias(version.addAlias("prod"))
 			.alias(Alias.Builder
 				.create(this, Constants.PROJECT_NAME + "Alias")
