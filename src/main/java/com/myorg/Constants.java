@@ -9,4 +9,7 @@ public class Constants {
 	public static final String LAMBDA_FUNCTION_NAME = "abc";
 	public static final String LAMBDA_FUNCTION_ARN = "arn:aws:lambda:us-east-1:784439035548:function:abc";
 	public static final String LAMBDA_FUNCTION_ALIAS = "prod";
+
+	public static final String IAM_MANAGED_POLICY_CODEDEPLOY_FULL_ACCESS = "AWSCodeDeployFullAccess";
+	public static final String IAM_MANAGED_POLICY_LAMBDA_FULL_ACCESS = "AWSLambda_FullAccess";
 }

@@ -18,6 +18,8 @@ import software.amazon.awscdk.services.codepipeline.StageProps;
 import software.amazon.awscdk.services.codepipeline.actions.CodeBuildAction;
 import software.amazon.awscdk.services.codepipeline.actions.CodeBuildActionType;
 import software.amazon.awscdk.services.codepipeline.actions.CodeCommitSourceAction;
+import software.amazon.awscdk.services.iam.IRole;
+import software.amazon.awscdk.services.iam.ManagedPolicy;
 import software.amazon.awscdk.services.lambda.Alias;
 import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.IFunction;
@@ -134,9 +136,20 @@ public class CdkProjectStack extends Stack {
 
 				)
 			)))
+			// .role(Role.Builder.create(this, Constants.PROJECT_NAME + "CodeBuildRole")
+			// 	.assumedBy(new ServicePrincipal("codebuild.amazonaws.com"))
+			// 	.managedPolicies(Arrays.asList(
+			// 		ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_CODEDEPLOY_FULL_ACCESS),
+			// 		ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_LAMBDA_FULL_ACCESS_)
+			// 	))
+			// 	.build())
 			// STANDARD_5_0 includes CLIv2. Default is STANDARD_1_0 having CLIv1
 			.environment(BuildEnvironment.builder().buildImage(LinuxBuildImage.STANDARD_5_0).build())
 			.build();
+
+		IRole codebuildRole = pipelineProject.getRole();
+		codebuildRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_CODEDEPLOY_FULL_ACCESS));
+		codebuildRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_LAMBDA_FULL_ACCESS));
 
 		Artifact buildOutput = new Artifact("DeployToLambdaOutputArtifact");
 
