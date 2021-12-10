@@ -42,26 +42,6 @@ public class CdkProjectStack extends Stack {
 			.repositoryName(Constants.PROJECT_NAME + "Repository")
 			.build();
 
-		/*
-		// CodePipeline with CodeBuild (Modern API)
-		final CodePipeline codePipeline = CodePipeline.Builder.create(this, Constants.PROJECT_NAME + "Pipeline")
-			.selfMutation(false)
-			.pipelineName(Constants.PROJECT_NAME + "Pipeline")
-			.synth(CodeBuildStep.Builder.create("DeployToLambdaVersion")
-				.input(CodePipelineSource.codeCommit(repository, Constants.VCS_REPOSITORY_BRANCH))
-				// .installCommands(Arrays.asList(
-				// 	"npm install -g aws-cdk"
-				// ))
-				.commands(Arrays.asList(
-					"echo ls -ali",
-					"ls -ali",
-					"echo pwd",
-					"pwd"
-				))
-				.build()
-			).build();
-		*/
-
 		Artifact sourceOutput = new Artifact("SourceArtifact");
 		final Action codeCommitAction = CodeCommitSourceAction.Builder
 			.create()
@@ -79,7 +59,6 @@ public class CdkProjectStack extends Stack {
 		final PipelineProject pipelineProject = PipelineProject.Builder
 			.create(this, "Project")
 			.projectName(Constants.PROJECT_NAME)
-			//.logging(LoggingOptions.builder().cloudWatch(CloudWatchLoggingOptions.builder().enabled(true).build()).build())
 			.buildSpec(BuildSpec.fromObject(ImmutableMap.of(
 				"version", "0.2",
 				"phases", ImmutableMap.of(
@@ -136,13 +115,6 @@ public class CdkProjectStack extends Stack {
 
 				)
 			)))
-			// .role(Role.Builder.create(this, Constants.PROJECT_NAME + "CodeBuildRole")
-			// 	.assumedBy(new ServicePrincipal("codebuild.amazonaws.com"))
-			// 	.managedPolicies(Arrays.asList(
-			// 		ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_CODEDEPLOY_FULL_ACCESS),
-			// 		ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_LAMBDA_FULL_ACCESS_)
-			// 	))
-			// 	.build())
 			// STANDARD_5_0 includes CLIv2. Default is STANDARD_1_0 having CLIv1
 			.environment(BuildEnvironment.builder().buildImage(LinuxBuildImage.STANDARD_5_0).build())
 			.build();
@@ -183,7 +155,6 @@ public class CdkProjectStack extends Stack {
 			)
 			.deploymentConfig(LambdaDeploymentConfig.CANARY_10_PERCENT_5_MINUTES)
 			// .deploymentConfig(LambdaDeploymentConfig.ALL_AT_ONCE)
-			// .alias(version.addAlias("prod"))
 			.alias(Alias.Builder
 				.create(this, Constants.PROJECT_NAME + "Alias")
 				.aliasName(Constants.LAMBDA_FUNCTION_ALIAS)
