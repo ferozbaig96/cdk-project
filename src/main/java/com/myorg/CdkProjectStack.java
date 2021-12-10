@@ -148,8 +148,10 @@ public class CdkProjectStack extends Stack {
 			.build();
 
 		IRole codebuildRole = pipelineProject.getRole();
-		codebuildRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_CODEDEPLOY_FULL_ACCESS));
-		codebuildRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_LAMBDA_FULL_ACCESS));
+		if (null != codebuildRole) {
+			codebuildRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_CODEDEPLOY_FULL_ACCESS));
+			codebuildRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_LAMBDA_FULL_ACCESS));
+		}
 
 		Artifact buildOutput = new Artifact("DeployToLambdaOutputArtifact");
 
