@@ -42,6 +42,8 @@ public class CdkProjectStack extends Stack {
 			.repositoryName(Constants.PROJECT_NAME + "Repository")
 			.build();
 
+		// CodePipeline
+		// CodeCommit Stage + Action
 		Artifact sourceOutput = new Artifact("SourceArtifact");
 		final Action codeCommitAction = CodeCommitSourceAction.Builder
 			.create()
@@ -56,6 +58,7 @@ public class CdkProjectStack extends Stack {
 			.actions(Collections.singletonList(codeCommitAction))
 			.build();
 
+		// CodeBuild Stage + Action
 		final PipelineProject pipelineProject = PipelineProject.Builder
 			.create(this, "Project")
 			.projectName(Constants.PROJECT_NAME)
@@ -119,6 +122,7 @@ public class CdkProjectStack extends Stack {
 			.environment(BuildEnvironment.builder().buildImage(LinuxBuildImage.STANDARD_5_0).build())
 			.build();
 
+		// Adding permissions to CodeBuild assumed IAM Role
 		IRole codebuildRole = pipelineProject.getRole();
 		if (null != codebuildRole) {
 			codebuildRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName(Constants.IAM_MANAGED_POLICY_CODEDEPLOY_FULL_ACCESS));
@@ -141,6 +145,7 @@ public class CdkProjectStack extends Stack {
 			.actions(Collections.singletonList(codeBuildAction))
 			.build();
 
+		// CodeDeploy Deployment via Canary
 		IFunction function = Function.fromFunctionArn(this, Constants.PROJECT_NAME + "Function",
 			Constants.LAMBDA_FUNCTION_ARN);
 
